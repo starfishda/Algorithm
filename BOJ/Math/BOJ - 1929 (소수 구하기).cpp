@@ -1,29 +1,58 @@
 #include<iostream>
 #include<algorithm>
 using namespace std;
-bool arr[1000001];
+int arr[100];
 
-int main() {
-	int m, n;
-	cin >> m >> n;
-
-	for (int i = 0; i <= n; i++) {
-		arr[i] = true;
-	}
-
-	arr[1] = false;
-
-	for (int i = 2; i <= n; i++) {
-		if (arr[i]) {
-			for (int j = 2 * i; j <= n; j += i) {
-				arr[j] = false;
-			}
+bool multi2(int a) {
+	for (int i = 1; i < arr.size(); i++) {
+		if (arr[i] == a) {
+			arr[i] = 0;
+			return true;
 		}
 	}
+	return false;
+}
 
-	for (int i = m; i <= n; i++) {
-		if (arr[i])
-			cout << i << "\n";
+int main() {
+	int n;
+	cin >> n;
+	vector<int> value[100];
+
+	for (int i = 0; i < n; i++) {
+		cin >> arr[i];
 	}
+	int index = 0;
+	
+
+	value[index].push_back(arr[0]);
+	arr[0] = 0;
+
+	bool check = false;
+	int i = 0;
+	while (!check) {
+		if (value[i] % 3 == 0) {
+			int a = value[i] / 3;
+			for (int i = 0; i < arr.size(); i++) {
+				if (arr[i] == a) {
+					arr[i] = 0;
+					value[index].push_back(arr[i]);
+					break;
+				}
+			}
+		}
+		else if (multi2(value[i] * 2)) {
+			value[index].push_back(arr[i]);
+		}
+		else {
+			index++;
+			check = true;
+		}
+		i++;
+	}
+	
+	for (int i = 0; i < value.size(); i++) {
+		cout << value[i] << " ";
+	}
+	
 	return 0;
 }
